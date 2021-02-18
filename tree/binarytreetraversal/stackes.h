@@ -21,7 +21,7 @@ void createstack(struct stack * stk,int size)
 
 void push(struct stack * stk,struct node * x)
 {
-	if(stk->top==stk->size)
+	if(stk->top==stk->size-1)
 	{
 		printf("\nSeems that stack is already full\n");
 	}

@@ -1,57 +1,13 @@
 #include<stdio.h>
 #include<stdlib.h>
 #include"stackes.h"
+#include"queue.h"
 struct node
 {
 	int data;
 	struct node * lchild;
 	struct node * rchild;
 }* root=NULL;
-
-struct queue
-{
-	int size;
-	int front;
-	int rear;
-	struct node ** Q;
-};
-
-
-void create(struct queue * q,int size)
-{
-	q->size=size;
-	q->front=q->rear=0;
-	q->Q=(struct node **)malloc(sizeof(struct node *)*q->size);
-}
-
-void enqueue(struct queue * q,struct node * x)
-{
-	if((q->rear + 1)%q->size==q->front)
-		printf("\nQueue is full\n");
-	else
-	{
-		q->rear=(q->rear + 1)%q->size;
-		q->Q[q->rear]=x;
-	}
-}
-
-struct node * dequeue(struct queue * q)
-{
-	struct node * x=NULL;
-	if(q->front==q->rear)
-		printf("\nQueue is empty\n");
-	else
-	{
-		q->front=(q->front + 1)%q->size;
-		x=q->Q[q->front];
-	}
-	return x;
-}
-
-int isEmpty(struct queue q)
-{
-	return q.front==q.rear;
-}
 
 void Treecreate()
 {
@@ -183,10 +139,231 @@ void levelorder(struct node * p)
 		}
 	}
 }
+
+int countingnodes(struct node * p)
+{
+	int x,y;
+	if(p)
+	{
+		x=countingnodes(p->lchild);
+		y=countingnodes(p->rchild);
+		return x+y+1;
+	}
+	return 0;
+}
+
+int countingnodesdeg2(struct node * p)
+{
+	int x,y;
+	if(p)
+	{
+		x=countingnodesdeg2(p->lchild);
+		y=countingnodesdeg2(p->rchild);
+		if(p->lchild && p->rchild)
+		{
+			return x+y+1;
+		}
+		else
+			return x+y;
+	}
+	return 0;
+}
+
+int sumofnodes(struct node * p)
+{
+	int x,y;
+	if(p)
+	{
+		x=sumofnodes(p->lchild);
+		y=sumofnodes(p->rchild);
+		return x+y+p->data;
+	}
+	return 0;
+}
+
+int height(struct node * p)
+{
+	int x,y;
+	x=y=0;
+	if(p)
+	{
+		x=height(p->lchild);
+		y=height(p->rchild);
+		if(x>y)
+			return x+1;
+		else
+			return y+1;
+	}
+}
+
+int countingnodesdeg0(struct node * p)
+{
+	int x,y;
+	if(p)
+	{
+		x=countingnodesdeg0(p->lchild);
+		y=countingnodesdeg0(p->rchild);
+		if(p->lchild==NULL && p->rchild==NULL)
+		{
+			return x+y+1;
+		}
+		else
+		{
+			return x+y;
+		}
+	}
+	return 0;
+}
+
+int countingnodesdeg1(struct node * p)
+{
+	int x,y;
+	if(p)
+	{
+		x=countingnodesdeg1(p->lchild);
+		y=countingnodesdeg1(p->rchild);
+		if(p->lchild!=NULL ^ p->rchild!=NULL)  /*if((p->lchild!=NULL && p->rchild==NULL) || (p->lchild==NULL && p->rchild!=NULL))*/
+		{
+			return x+y+1;
+		}
+		else
+		{
+			x+y;
+		}
+	}
+	return 0;
+}
+void deallocate (struct node * p)
+{
+    if(p==NULL)
+    	return;
+
+    deallocate(p->lchild);
+    deallocate(p->rchild);
+
+    free(p);
+}
 int main()
 {
-	Treecreate();
-	printf("preorder\n");
+	int choice =1;
+	static int cout=0;
+	while(choice)
+	{
+		printf("\n1.Create the tree\n");
+		printf("\n2.Preorder traversal by recursive method\n");
+		printf("\n3.Inorder traversal by recursive method\n");
+		printf("\n4.Postorder traversal by recursive method\n");
+		printf("\n5.Preorder traversal by Iterative method\n");
+		printf("\n6.Inorder traversal by Iterative method\n");
+		printf("\n7.Postorder traversal by Iterative method\n");
+		printf("\n8.Counting the number of nodes in the tree(recursive)\n");
+		printf("\n9.Counting the number of nodes with degree 0 (leaf nodes)in the tree(recursive)\n");
+		printf("\n10.Counting the number of nodes with degree 1 in the tree(recursive)\n");
+		printf("\n11.Counting the number of nodes with degree 2 in the tree(recursive)\n");
+		printf("\n12.Counting the sum of all nodes in the tree by recursive method\n");
+		printf("\n13.Counting the height of the tree by recursive method\n");
+		printf("\n14.Exit the program :(\n");
+		printf("\nEnter the choice that you want to execute\n");
+		scanf("%d",&choice);
+		switch(choice)
+		{
+			case 1:
+					printf("\nWe are creating your tree please wait ;)\n");
+					Treecreate();
+					cout++;
+			break;
+
+			case 2:
+					printf("\nThe preorder traversal of the tree is by recursive method\n");
+					preorder(root);
+					cout++;
+			break;
+
+			case 3:
+					printf("\nThe Inorder traversal of the tree is by recursive method\n");
+					inorder(root);
+					cout++;
+			break;
+
+			case 4:
+					printf("\nThe Postorder traversal of the tree is by recursive method\n");
+					postorder(root);
+					cout++;
+			break;
+
+			case 5:
+					printf("\nThe Preorder traversal of the tree is by iterative method\n");
+					iterpreorder(root);
+					cout++;
+					
+			break;
+
+			case 6:
+					printf("\nThe Inorder traversal of the tree is by iterative method\n");
+					iterinorder(root);
+					cout++;
+			break;
+
+			case 7:
+					printf("\nThe Inorder traversal of the tree is by iterative method\n");
+					/*iterpostorder(root);*/
+			break;
+
+			case 8:
+					printf("\nCounting the number of nodes in the tree by recursive method\n");
+					int x1=countingnodes(root);
+					cout++;
+					printf("\nThe nomber nodes present in the tree are %d\n",x1);
+			break;
+
+			case 9:
+					printf("\nCounting the number of nodes in the tree of degree 0 by recursive method\n");
+					int x2=countingnodesdeg0(root);
+					printf("\nThe nomber nodes present in the tree of degree 0 are %d\n",x2);
+					cout++;
+			break;
+
+			case 10:
+					printf("\nCounting the number of nodes in the tree of degree 1 by recursive method\n");
+					int x3=countingnodesdeg1(root);
+					printf("\nThe nomber nodes present in the tree of degree 1 are %d\n",x3);
+					cout++;
+			break;
+
+			case 11:
+					printf("\nCounting the number of nodes in the tree of degree 2 by recursive method\n");
+					int x4=countingnodesdeg2(root);
+					printf("\nThe nomber nodes present in the tree of degree 2 are %d\n",x4);
+					cout++;
+			break;
+
+			case 12:
+					printf("\nFinding the sum of all the nodes present in the tree by recursive method\n");
+					int x5=sumofnodes(root);
+					printf("\nThe sum of all the elements present in the nodes are %d\n",x5);
+					cout++;
+			break;
+
+			case 13:
+					printf("\nFinding the height of the tree \n");
+					int x6=height(root);
+					printf("\nThe height of the tree is %d\n",x6);
+					cout++;
+			break;
+
+			case 14:
+					choice=0;
+					if(cout==0 || root==NULL)
+						printf("\nSeems that you don't like my program :(\n");
+					else
+					{
+						printf("\nExiting............\n");
+						deallocate(root);
+					}
+			break;
+		}
+	}
+	/*printf("preorder\n");
 	preorder(root);
 	printf("\nInorder\n");
 	inorder(root);
@@ -195,8 +372,20 @@ int main()
 	printf("\npreorder\n");
 	iterpreorder(root);
 	printf("\nInorder\n");
-	iterinorder(root);
-	printf("\nlevelorder\n");
-	levelorder(root);
+	iterinorder(root);*/
+	/*int h=countingnodes(root);
+	printf("%d\n",h);
+	int h2=countingnodesdeg2(root);
+	printf("%d\n",h2);*/
+	/*int h3=sumofnodes(root);
+	printf("%d\n",h3);*/
+	/*int h4=height(root);
+	printf("%d\n",h4);*/
+	/*int h5=countingnodesdeg0(root);
+	printf("%d\n",h5);*/
+	/*int h5=countingnodesdeg1(root);
+	printf("%d\n",h5);*/
+	/*printf("\nlevelorder\n");
+	levelorder(root);*/
 	return 0;
 }
