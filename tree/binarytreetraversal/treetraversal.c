@@ -21,7 +21,7 @@ void create(struct queue * q,int size)
 {
 	q->size=size;
 	q->front=q->rear=0;
-	q->Q=(struct node **)malloc(sizeof(struct node *));
+	q->Q=(struct node **)malloc(sizeof(struct node *)*q->size);
 }
 
 void enqueue(struct queue * q,struct node * x)
@@ -122,11 +122,81 @@ void postorder(struct node * p)
 		printf("%d\n",p->data);
 	}
 }
+
+void iterpreorder(struct node * p)
+{
+	struct stack stk;
+	createstack(&stk,100);
+	while(p!=NULL || !sisEmpty(&stk))
+	{
+		if(p)
+		{
+			printf("%d\n",p->data);
+			push(&stk,p);
+			p=p->lchild;
+		}
+		else
+		{
+			p=pop(&stk);
+			p=p->rchild;
+		}
+	}
+}
+
+void iterinorder(struct node * p)
+{
+	struct stack stk;
+	createstack(&stk,100);
+	while(p || !sisEmpty(&stk))
+	{
+		if(p)
+		{
+			push(&stk,p);
+			p=p->lchild;
+		}
+		else
+		{
+			p=pop(&stk);
+			printf("%d\n",p->data);
+			p=p->rchild;
+		}
+	}
+}
+
+void levelorder(struct node * p)
+{
+	struct queue q;
+	printf("%d\n",p->data);
+	enqueue(&q,p);
+	while(!isEmpty(q))
+	{
+		p=dequeue(&q);
+		if(p->lchild)
+		{
+			printf("%d\n",p->data);
+			enqueue(&q,p->lchild);
+		}
+		if(p->rchild)
+		{
+			printf("%d\n",p->data);
+			enqueue(&q,p->rchild);
+		}
+	}
+}
 int main()
 {
 	Treecreate();
+	printf("preorder\n");
 	preorder(root);
+	printf("\nInorder\n");
 	inorder(root);
+	printf("\npostorder\n");
 	postorder(root);
+	printf("\npreorder\n");
+	iterpreorder(root);
+	printf("\nInorder\n");
+	iterinorder(root);
+	printf("\nlevelorder\n");
+	levelorder(root);
 	return 0;
 }

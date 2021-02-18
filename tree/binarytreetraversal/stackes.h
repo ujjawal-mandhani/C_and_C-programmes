@@ -16,7 +16,7 @@ void createstack(struct stack * stk,int size)
 {
 	stk->size=size;
 	stk->top=-1;
-	stk->Q=(struct node **)malloc(sizeof(struct node *)*size);
+	stk->Q=(struct node **)malloc(sizeof(struct node *)*stk->size);
 }
 
 void push(struct stack * stk,struct node * x)
@@ -42,6 +42,7 @@ struct node * pop(struct stack * stk)
 		x=stk->Q[stk->top];
 		stk->top--;
 	}
+	return x;
 }
 int sisEmpty(struct stack * stk)
 {
@@ -50,3 +51,4 @@ int sisEmpty(struct stack * stk)
 	else
 		return 0;
 }
+
