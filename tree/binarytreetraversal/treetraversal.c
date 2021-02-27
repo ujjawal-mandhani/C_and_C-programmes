@@ -31,7 +31,7 @@ void Treecreate()
 		{
 			t=(struct node *)malloc(sizeof(struct node));
 			t->data=x;
-			t->lchild=t->rchild;
+			t->lchild=t->rchild=NULL;
 			p->lchild=t;
 			enqueue(&q,t);
 		}
@@ -118,7 +118,33 @@ void iterinorder(struct node * p)
 		}
 	}
 }
-
+/*void iterpostorder(struct node * p)
+{
+	struct stack stk;
+	long int temp;
+	while(p!=NULL || sisEmpty(stk))
+	{
+		if(p!=NULL)
+		{
+			push(&stk,p);
+			p=p->lchild;
+		}
+		else
+		{
+			temp=pop(&stk);
+			if(temp>0)
+			{
+				push(&stk,-temp);
+				t=((node *)temp)->rchild;
+			}
+			else
+			{
+				printf("%d\n",((node *)temp->data ));
+				t=NULL;
+			}
+		}
+	}
+}*/
 void levelorder(struct node * p)
 {
 	struct queue q;
@@ -306,7 +332,7 @@ int main()
 
 			case 7:
 					printf("\nThe Inorder traversal of the tree is by iterative method\n");
-					/*iterpostorder(root);*/
+					//iterpostorder(root);
 			break;
 
 			case 8:
